@@ -27,6 +27,10 @@ async function initialize() {
       t: {
         type: 'f',
         value: 0.0
+      },
+      deltaY: {
+        type: 'f',
+        value: 0.0
       }
     },
     vertexShader: document.getElementById('vs').textContent,
@@ -89,5 +93,12 @@ function render() {
   requestAnimationFrame(render)
 }
 
+// wheel
+document.addEventListener('wheel', (e) => {
+  TweenMax.to(O.material.uniforms.deltaY, 2, {
+    value: e.deltaY,
+    ease: Power4.easeOut
+  })
+})
 
 initialize()
