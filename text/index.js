@@ -6,9 +6,9 @@ const O = {}
 async function initialize() {
   const texture = load('i.jpg')
 
-  // O.texture = await texture
+  O.texture = await texture
 
-  O.texture = getTextCanvas('Canvas')
+  // O.texture = getTextCanvas('Canvas')
   // O.texture.needsUpdate = true
 
   console.log(O.texture)
@@ -19,13 +19,21 @@ async function initialize() {
   })
   O.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000)
 
+  O.cGeometry = new THREE.CylinderGeometry(1, 1, 1, 24, 1, true, -Math.PI / 2, Math.PI - (Math.PI / 2))
+  O.cMaterial = new THREE.MeshBasicMaterial({
+    // wireframe: true,
+    map: O.texture,
+    side: THREE.DoubleSide
+  })
+  O.cylinder = new THREE.Mesh(O.cGeometry, O.cMaterial)
+
   O.geometry = new THREE.PlaneBufferGeometry(1, 1, 16, 16)
   O.material = new THREE.ShaderMaterial({
     // wireframe: true,
     uniforms: {
       texture: {
         type: 't',
-        value: O.texture
+        value: getTextCanvas('Canvas')
       },
       t: {
         type: 'f',
@@ -70,9 +78,12 @@ async function initialize() {
 
   // mesh
   O.mesh.rotation.y = Math.PI / 4
+  // O.cylinder.position.set(0, 0, -1)
+  // O.cylinder.rotation.x = Math.PI / 10
 
   // scene
   O.scene.add(O.mesh)
+  O.scene.add(O.cylinder)
 
   render()
 }
@@ -119,6 +130,8 @@ function render() {
   // O.material.uniforms.texture.value.needsUpdate = true;
   O.renderer.render(O.scene, O.camera)
   requestAnimationFrame(render)
+
+  O.cylinder.rotation.y += 0.01
 }
 
 initialize()
