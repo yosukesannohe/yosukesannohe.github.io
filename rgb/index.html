@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link href="https://fonts.googleapis.com/css?family=Kosugi+Maru&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+  <!-- <button type="button" class="js-toggle">toggle</button> -->
+  <canvas id="canvas"></canvas>
+
+  <script id="vs" type="x-shader/x-vertex">
+    varying vec2 vUv;
+    attribute float n;
+
+    void main() {
+      vUv = uv;
+
+      vec3 pos = position;
+
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(pos.x, pos.y, pos.z, 1.0);
+    }
+  </script>
+  <script id="fs" type="x-shader/x-fragment">
+    precision mediump float;
+    varying vec2 vUv;
+    uniform float time;
+    uniform float y;
+    uniform sampler2D texture;
+    uniform sampler2D spectrum;
+    uniform vec2 resolution;
+
+    void main() {
+      vec4 color = texture2D(texture, vUv);
+
+      vec4 negColor = texture2D(texture, vec2(vUv.x + y * -0.0002, vUv.y));
+      vec4 posColor = texture2D(texture, vec2(vUv.x + y * 0.0002, vUv.y));
+
+      // gl_FragColor = color;
+
+      gl_FragColor = vec4(negColor.r, color.g, posColor.b, 1.);
+
+
+
+
+
+
+
+
+
+
+      // vec2 uv = gl_FragCoord.xy / resolution.xy;
+      // vec4 color = texture2D(texture, vUv);
+      // float freq = texture2D(spectrum, vec2(sin(time), cos(time))).r;
+// 
+      // // Seed value
+      // float v = freq * freq;
+// 
+      // // Prepare for chromatic Abbreveation
+      // vec2 focus = vec2(1, 100.2);
+      // float d = v * 0.06;
+      // vec2 ruv = focus + (vUv - focus) * (1. - d);
+      // vec2 guv = focus + (vUv - focus) * (1. - 2. * d);
+      // vec2 buv = focus + (vUv - focus) * (1. - 3. * d);
+// 
+      // // Random Glitch
+      // if (v > 0.1) {
+      //     // Randomize y
+      //     float y = floor(vUv.y * 13. * sin(2. * time * 0.05)) + 1.;
+      //     if (sin(36. * y * v) > 0.9) {
+      //         ruv.x = fract(vUv.x + sin(76. * y) * 0.1);
+      //         guv.x = fract(vUv.x + sin(34. * y) * 0.1);
+      //         buv.x = fract(vUv.x + sin(199. * y) * 0.1);
+      //     }
+// 
+      //     // RGB Shift
+      //     v = pow(v * 1.5, 2.) * 1.15;
+      //     color.r = texture2D(texture, vec2(vUv.x + sin(time * 123.45) * v, vUv.y)).r;
+      //     color.g = texture2D(texture, vec2(vUv.x + sin(time * 457.67) * v, vUv.y)).g;
+      //     color.b = texture2D(texture, vec2(vUv.x + sin(time * 923.67) * v, vUv.y)).b;
+      // }
+// 
+      // // Compose Chromatic Abbreveation
+      // color.r = color.r * 0.5 + color.r * texture2D(texture, ruv).r;
+      // color.g = color.g * 0.5 + color.g * texture2D(texture, guv).g;
+      // color.b = color.b * 0.5 + color.b * texture2D(texture, buv).b;
+// 
+      // // vec4 c = texture2D(spectrum, vUv * vec2(color.r, color.g));
+// 
+      // gl_FragColor = color;
+      // gl_FragColor = texture2D(texture, vUv);
+    }
+  </script>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.0.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/109/three.min.js" integrity="sha256-Wua0LsQkGDEeIkbmBNjj9wcThJh5uCD6R8+5YQhXveQ=" crossorigin="anonymous"></script>
+  <script src="index.js"></script>
+</body>
+</html>
