@@ -34,14 +34,19 @@
     uniform vec2 resolution;
 
     void main() {
+      float offsetY = cos((gl_FragCoord.y * 0.1) + time) * (y * 0.00006);
       vec4 color = texture2D(texture, vUv);
 
-      vec4 negColor = texture2D(texture, vec2(vUv.x + y * -0.0002, vUv.y));
-      vec4 posColor = texture2D(texture, vec2(vUv.x + y * 0.0002, vUv.y));
+      float r = texture2D(texture, vec2(vUv.x, vUv.y)).r;
+      float g = texture2D(texture, vec2(vUv.x + y * 0.0002, vUv.y)).g;
+      float b = texture2D(texture, vec2(vUv.x + y * 0.0004, vUv.y)).b;
+
+      // vec4 negColor = texture2D(texture, vec2(vUv.x + offsetY, vUv.y));
+      // vec4 posColor = texture2D(texture, vec2(vUv.x - offsetY, vUv.y));
 
       // gl_FragColor = color;
 
-      gl_FragColor = vec4(negColor.r, color.g, posColor.b, 1.);
+      gl_FragColor = vec4(r, g, b, 1.);
 
 
 

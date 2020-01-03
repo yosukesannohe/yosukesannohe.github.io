@@ -4,7 +4,7 @@ let height = window.innerHeight
 const O = {}
 
 async function initialize() {
-  const texture = load('i2.jpg')
+  const texture = load('img.jpg')
   const spectrum = load('ptrn01.jpg')
 
   O.texture = await texture
@@ -38,7 +38,7 @@ async function initialize() {
       },
       y: {
         type: 'f',
-        value: 1.0
+        value: 0.0
       },
       spectrum: {
         type: 't',
