@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link href="https://fonts.googleapis.com/css?family=Kosugi+Maru&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+  <!-- <button type="button" class="js-toggle">toggle</button> -->
+  <canvas id="canvas"></canvas>
+
+  <script id="vs" type="x-shader/x-vertex">
+    varying vec2 vUv;
+    attribute float n;
+
+    void main() {
+      vUv = uv;
+
+      vec3 pos = position;
+
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(pos.x, pos.y, pos.z, 1.0);
+    }
+  </script>
+  <script id="fs" type="x-shader/x-fragment">
+    precision mediump float;
+    varying vec2 vUv;
+    uniform float time;
+    uniform float y;
+    uniform sampler2D texture;
+    uniform sampler2D spectrum;
+    uniform vec2 resolution;
+    uniform vec2 mouse;
+
+    void main() {
+      float radius = 0.2;
+      float strength = 0.4;
+      vec2 center = mouse.xy;
+
+      vec2 coord = vUv;
+      float alpha = 1.0;
+      float offsetY = 0.0;
+
+      coord -= center;
+      float distance = length(coord);
+      if (distance < radius) {
+            float percent = distance / radius;
+            // offsetY = sin((gl_FragCoord.y * 0.05) + time) * 0.05 * smoothstep(0.0, radius / distance, percent);
+
+            coord *= mix(1.0, smoothstep(0.0, radius / distance, percent), strength);
+            // alpha *= smoothstep(1.0, 0.0, percent);
+
+            // if (strength > 0.0) {
+            //       coord *= mix(1.0, smoothstep(0.0, radius / distance, percent), strength * 0.75);
+            // } else {
+            //       coord *= mix(1.0, pow(percent, 1.0 + strength * 0.75) * radius / distance, 1.0 - percent);
+            // }
+      }
+
+      coord += center;
+
+      vec3 color = texture2D(texture, vec2(coord.x, coord.y + offsetY)).rgb;
+
+      gl_FragColor = vec4(color.r, color.g, color.b, alpha);
+    }
+  </script>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.0.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/109/three.min.js" integrity="sha256-Wua0LsQkGDEeIkbmBNjj9wcThJh5uCD6R8+5YQhXveQ=" crossorigin="anonymous"></script>
+  <script src="index.js"></script>
+</body>
+</html>
