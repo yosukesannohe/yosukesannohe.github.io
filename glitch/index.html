@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link href="https://fonts.googleapis.com/css?family=Kosugi+Maru&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+  <!-- <button type="button" class="js-toggle">toggle</button> -->
+  <canvas id="canvas"></canvas>
+
+  <script id="vs" type="x-shader/x-vertex">
+    varying vec2 vUv;
+    attribute float n;
+
+    void main() {
+      vUv = uv;
+
+      vec3 pos = position;
+
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(pos.x, pos.y, pos.z, 1.0);
+    }
+  </script>
+  <script id="fs" type="x-shader/x-fragment">
+    precision mediump float;
+    varying vec2 vUv;
+    uniform float time;
+    uniform float y;
+    uniform sampler2D texture;
+    uniform sampler2D spectrum;
+    uniform vec2 resolution;
+    uniform vec2 mouse;
+
+    float random(vec2 co){
+      return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+    }
+
+    void main() {
+      float threshold = 0.96;
+
+      float my_noise = random(vec2(time));
+      float flag = step(threshold, my_noise);
+      float strength = my_noise;
+      strength = strength * 2.0 - 1.0;
+
+      // =======
+      float glitchValue = 0.2;
+      vec2 uv = vUv;
+
+      vec4 blockNoise = texture2D(spectrum, vUv);
+      float x = sin(gl_FragCoord.x * 0.005 + time);
+      float y = cos(gl_FragCoord.y * 0.05 + time);
+      uv.x += (blockNoise.r * glitchValue * 0.25 * x) * flag;
+      uv.y += (blockNoise.g * glitchValue * 0.25 * y) * flag;
+
+      vec4 color = texture2D(texture, uv);
+      
+      gl_FragColor = color;
+    }
+  </script>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.0.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/109/three.min.js" integrity="sha256-Wua0LsQkGDEeIkbmBNjj9wcThJh5uCD6R8+5YQhXveQ=" crossorigin="anonymous"></script>
+  <script src="index.js"></script>
+</body>
+</html>
