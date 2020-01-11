@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link href="https://fonts.googleapis.com/css?family=Kosugi+Maru&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+  <!-- <button type="button" class="js-toggle">toggle</button> -->
+  <canvas id="canvas"></canvas>
+
+  <script id="vs" type="x-shader/x-vertex">
+    varying vec2 vUv;
+    attribute float n;
+
+    void main() {
+      vUv = uv;
+
+      vec3 pos = position;
+
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(pos.x, pos.y, pos.z, 1.0);
+    }
+  </script>
+  <script id="fs" type="x-shader/x-fragment">
+    precision mediump float;
+    varying vec2 vUv;
+    uniform float time;
+    uniform float y;
+    uniform sampler2D texture;
+    uniform sampler2D spectrum;
+    uniform vec2 resolution;
+    uniform vec2 mouse;
+
+    float random(vec2 co){
+      return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+    }
+
+    void main() {
+      float threshold = 0.9;
+
+      float noise = random(vec2(time));
+      float flag = step(threshold, noise);
+      float strength = noise;
+      strength = strength * 2.0 - 1.0;
+
+      
+
+      float rx = (sin((gl_FragCoord.x * (0.08)) + time) * 0.05) * flag;
+      float gx = (sin((gl_FragCoord.x * (0.06)) + time) * 0.05) * flag;
+      float bx = (sin((gl_FragCoord.x * (0.07)) + time) * 0.05) * flag;
+
+      float ry = (cos((gl_FragCoord.y * (0.05)) + time) * 0.04) * flag;
+      float gy = (cos((gl_FragCoord.y * (strength * 0.06)) + time) * 10.3) * flag;
+
+      // float y = (cos((gl_FragCoord.y * 0.05) + time) * 0.02);
+      // float z = (sin((gl_FragCoord.x * 0.03) + time) * 0.03);
+
+      // float x = (flag * strength) * vUv.x;
+
+      
+
+      vec4 t1 = texture2D(texture, vec2(vUv.x, vUv.y + ry));
+      vec4 t2 = texture2D(texture, vec2(vUv.x + gx, vUv.y));
+      vec4 t3 = texture2D(texture, vec2(vUv.x + bx, vUv.y));
+      gl_FragColor = vec4(t1.r, t2.g, t3.b, 1.);
+    }
+  </script>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.0.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/109/three.min.js" integrity="sha256-Wua0LsQkGDEeIkbmBNjj9wcThJh5uCD6R8+5YQhXveQ=" crossorigin="anonymous"></script>
+  <script src="index.js"></script>
+</body>
+</html>
