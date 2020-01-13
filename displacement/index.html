@@ -44,10 +44,11 @@
       float threshold = 0.96;
       float strength = 0.2;
 
-      float x = (sin(gl_FragCoord.x * 0.01 + time) * 0.05);
+      float x = (sin(gl_FragCoord.x * 0.01 + time) * 0.25);
+      float y = (cos(gl_FragCoord.x * 0.02 + time) * 0.25);
       // float x2 = (sin(gl_FragCoord.x * 0.05 + time) * 0.05) * (1.0 - transition);
 
-      vec4 disp = texture2D(spectrum, vec2(vUv.x + x, vUv.y));
+      vec4 disp = texture2D(spectrum, vec2(vUv.x + x, vUv.y + y));
       vec2 p1 = vUv + vec2(disp.x, disp.y) * strength * transition;
       vec2 p2 = vUv + vec2(disp.x, disp.y) * strength * (1.0 - transition);
 

@@ -7,7 +7,7 @@ async function initialize() {
   const texture = load('a.jpg')
   const texture2 = load('j.jpg')
   // const spectrum = load('block_white.png')
-  const spectrum = load('displacement.jpg')
+  const spectrum = load('border.png')
 
   O.texture = await texture
   O.texture2 = await texture2
