@@ -7,7 +7,7 @@ async function initialize() {
   const texture = load('a.jpg')
   const texture2 = load('j.jpg')
   // const spectrum = load('block_white.png')
-  const spectrum = load('border.png')
+  const spectrum = load('line.png')
 
   O.texture = await texture
   O.texture2 = await texture2
@@ -27,7 +27,7 @@ async function initialize() {
 
   
 
-  O.geometry = new THREE.PlaneBufferGeometry(1, 1, 16, 16)
+  O.geometry = new THREE.PlaneBufferGeometry(2, 2, 16, 16)
   O.material = new THREE.ShaderMaterial({
     // wireframe: true,
     uniforms: {
@@ -55,6 +55,9 @@ async function initialize() {
       },
       resolution: {
         value: new THREE.Vector2(window.innerWidth, window.innerHeight)
+      },
+      imageResolution: {
+        value: new THREE.Vector2(512, 512)
       },
       mouse: {
         value: new THREE.Vector2(0.5, 0.5)

@@ -35,6 +35,7 @@
     uniform vec2 resolution;
     uniform vec2 mouse;
     uniform float transition;
+    uniform vec2 imageResolution;
 
     float random(vec2 co){
       return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
@@ -44,19 +45,31 @@
       float threshold = 0.96;
       float strength = 0.2;
 
-      float x = (sin(gl_FragCoord.x * 0.01 + time) * 0.25);
-      float y = (cos(gl_FragCoord.x * 0.02 + time) * 0.25);
+      vec2 ratio = vec2(
+        min((resolution.x / resolution.y) / (imageResolution.x / imageResolution.y), 1.0),
+        min((resolution.y / resolution.x) / (imageResolution.y / imageResolution.x), 1.0)
+      );
+
+      vec2 uv = vec2(
+        vUv.x * ratio.x + (1.0 - ratio.x) * 0.5,
+        vUv.y * ratio.y + (1.0 - ratio.y) * 0.5
+      );
+
+      float x = (sin(gl_FragCoord.x * 0.1 + time) * 0.25);
+      float y = (cos(gl_FragCoord.x * 0.0002 + time) * 0.25);
+      // float x = 0.;
+      // float y = 0.;
       // float x2 = (sin(gl_FragCoord.x * 0.05 + time) * 0.05) * (1.0 - transition);
 
-      vec4 disp = texture2D(spectrum, vec2(vUv.x + x, vUv.y + y));
-      vec2 p1 = vUv + vec2(disp.x, disp.y) * strength * transition;
-      vec2 p2 = vUv + vec2(disp.x, disp.y) * strength * (1.0 - transition);
+      vec4 disp = texture2D(spectrum, vec2(uv.x + x, uv.y + y));
+      vec2 p1 = uv + vec2(disp.x, disp.y * -0.2) * transition;
+      vec2 p2 = uv + vec2(disp.x, disp.y * strength) * (1.0 - transition);
 
       vec4 texture1 = texture2D(texture, p1);
       vec4 texture2 = texture2D(texture2, p2);
       
       gl_FragColor = mix(texture1, texture2, transition);
-      // gl_FragColor = texture1;
+      // gl_FragColor = texture2D(texture, uv);
     }
   </script>
   
