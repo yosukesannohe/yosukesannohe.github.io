@@ -1,0 +1,37 @@
+body {
+  margin: auto;
+}
+
+.wrapper {
+  width: 4em;
+  height: 2em;
+  font-size: 32px;
+  border: 4px solid;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+  top: 10vw;
+  left: 25vh;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-weight: bold;
+  transition: opacity 0.2s linear;
+}
+
+.item.current {
+  opacity: 1;
+}
+
+.item:not([class*="current"]) {
+  opacity: 0;
+}
+
