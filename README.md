@@ -10,4 +10,5 @@
 - [ノイズ用のテクスチャで位置をずらすやつ](http://yosukesannohe.github.io/glitch/)
 - [画像がぐにゃっと切り替わるやつやつ](http://yosukesannohe.github.io/displacement/)
 - [全画面を覆うやつ](http://yosukesannohe.github.io/cover/)
-- [DOM要素に重ねるのはこうやってやるのかなという試作](http://yosukesannohe.github.io/scroll/)
+- [DOM要素に重ねるのはこうやってやるのかなという試作(Planeをそれぞれ動かす)](http://yosukesannohe.github.io/scroll/)
+- [DOM要素に重ねるのはこうやってやるのかなという試作2(PlaneをObject3Dに入れてまとめて動かす)](http://yosukesannohe.github.io/scroll2/)
