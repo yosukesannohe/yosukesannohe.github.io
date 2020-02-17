@@ -22,3 +22,13 @@ window.addEventListener('scroll', function() {
 })
 
 onResize()
+
+var ob = lozad('p', {
+  rootMargin: '0% 0% -50%'
+})
+ob.observe()
+
+new Rellax('img', {
+  speed: -2,
+  center: true
+});

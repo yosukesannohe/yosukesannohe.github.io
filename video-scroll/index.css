@@ -7,6 +7,16 @@ body {
   box-sizing: border-box;
 }
 
+.video {
+  margin-right: -10vw;
+  margin-left: -10vw;
+  margin-bottom: 100px;
+}
+
+.video video {
+  width: 100%;
+}
+
 .content {
   width: 100%;
   padding: 0 10vw;
@@ -31,4 +41,15 @@ body {
 .test video,
 .test img {
   max-width: 100%;
+}
+
+p {
+  opacity: 0;
+  transform: translateY(1em);
+  transition: all 0.5s ease-out;
+}
+
+p[data-loaded="true"] {
+  opacity: 1;
+  transform: translateY(0);
 }
