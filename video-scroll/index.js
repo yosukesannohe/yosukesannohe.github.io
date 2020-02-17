@@ -5,7 +5,7 @@ const prop = {
   'speed' : 2
 }
 
-gui.add(prop, 'speed', 0, 10, 1)
+gui.add(prop, 'speed', 0, 2, 0.1)
 
 function onResize() {
   const height = content.clientHeight
